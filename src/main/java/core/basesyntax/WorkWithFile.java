@@ -7,30 +7,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class WorkWithFile {
+    private static final String SUPPLY = "supply";
+    private static final String BUY = "buy";
+
     public void getStatistic(String fromFileName, String toFileName) {
-        String[] arrayStringOfFile = getDataFromFile(fromFileName);
-        String resultOfTable = new String();
+        String[] arrayStringOfFile = readFromFile(fromFileName);
+        String result = getResult(arrayStringOfFile);
+        writeToFile(toFileName, result);
+    }
+
+    public String getResult(String[] arrayStringOfFile) {
         int supply = 0;
         int buy = 0;
+        StringBuilder resultOfTable = new StringBuilder();
 
         for (int i = 0; i < arrayStringOfFile.length; i++) {
-            switch (arrayStringOfFile[i]) {
-                case "supply": supply += Integer.parseInt(arrayStringOfFile[i + 1]);
-                break;
-                case "buy": buy += Integer.parseInt(arrayStringOfFile[i + 1]);
-                break;
-                default: break;
+            if (arrayStringOfFile[i].equals(SUPPLY)) {
+                supply += Integer.parseInt(arrayStringOfFile[i + 1]);
+            } else if (arrayStringOfFile[i].equals(BUY)) {
+                buy += Integer.parseInt(arrayStringOfFile[i + 1]);
             }
         }
 
-        resultOfTable = "supply," + supply + "\n"
-                + "buy," + buy + "\n"
-                + "result," + (supply - buy);
-
-        writeToFile(toFileName, resultOfTable);
+        resultOfTable.append("supply," + supply + "\n")
+                .append("buy," + buy + "\n")
+                .append("result," + (supply - buy));
+        return resultOfTable.toString();
     }
 
-    public String[] getDataFromFile(String fromFileName) {
+    public String[] readFromFile(String fromFileName) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fromFileName))) {
             StringBuilder fileInStringBuilder = new StringBuilder();
             String value = bufferedReader.readLine();
