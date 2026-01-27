@@ -9,6 +9,8 @@ import java.io.IOException;
 public class WorkWithFile {
     private static final String SUPPLY = "supply";
     private static final String BUY = "buy";
+    private static final String COMMA = ",";
+    private static final String RESULT = "result";
 
     public void getStatistic(String fromFileName, String toFileName) {
         String[] arrayStringOfFile = readFromFile(fromFileName);
@@ -29,9 +31,10 @@ public class WorkWithFile {
             }
         }
 
-        resultOfTable.append("supply," + supply + "\n")
-                .append("buy," + buy + "\n")
-                .append("result," + (supply - buy));
+        resultOfTable
+                .append(SUPPLY).append(COMMA).append(supply).append(System.lineSeparator())
+                .append(BUY).append(COMMA).append(buy).append(System.lineSeparator())
+                .append(RESULT).append(COMMA).append(supply - buy);
         return resultOfTable.toString();
     }
 
